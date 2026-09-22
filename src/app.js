@@ -3,32 +3,21 @@ const { adminAuth, userAuth } = require("./middlewares/auth");
 
 const app = express();
 
-app.use("/admin", adminAuth);
-
-app.get("/admin/getAllData", adminAuth, (req, res) => {
-  res.send("This is the getAllData route for admin.");
+app.use("/", (err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
 });
 
-app.get("/user/login", (req, res) => {
+app.get("/getUserData", (req, res) => {
+  console.log(req.headers);
+  throw new Error("This is a test error");
   res.send("This is the login route for user.");
 });
 
-app.get("/user/getAllData", userAuth, (req, res) => {
-  res.send("This is the getAllData route for user.");
+app.use("/", (err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
 });
-
-app.get(
-  "/hello",
-  (req, res, next) => {
-    console.log("First callback function executed.");
-    // res.send("Hello, World!");
-    next();
-  },
-  (req, res) => {
-    console.log("Second callback function executed.");
-    res.send("This is the second callback function.");
-  },
-);
 
 app.listen(7777, () => {
   console.log("Server is running on port 7777");

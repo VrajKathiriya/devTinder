@@ -10,7 +10,7 @@ const adminAuth = (req, res, next) => {
 
 const userAuth = (req, res, next) => {
   const header = "xyzz";
-  const isAuthenticated = header === "xyz";
+  const isAuthenticated = header === "xyzz";
   if (!isAuthenticated) {
     return res.status(401).json({ message: "Unauthorized" });
   } else {
