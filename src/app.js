@@ -1,24 +1,34 @@
+require("dotenv").config();
+
 const express = require("express");
-const { adminAuth, userAuth } = require("./middlewares/auth");
+const connectDB = require("./config/database");
+const User = require("./models/user");
 
 const app = express();
 
-app.use("/", (err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
+app.post("/signup", async (req, res) => {
+  const user = new User({
+    firstName: "Virat",
+    lastName: "Kohli",
+    emailId: "vraj.kohli@example.com",
+    password: "password123",
+  });
+  try {
+    await user.save();
+    res.send("User created successfully");
+  } catch (error) {
+    res.status(500).send("Error creating user: " + error.message);
+  }
 });
 
-app.get("/getUserData", (req, res) => {
-  console.log(req.headers);
-  throw new Error("This is a test error");
-  res.send("This is the login route for user.");
-});
+connectDB()
+  .then(() => {
+    console.log("Connected to the database");
 
-app.use("/", (err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
-});
-
-app.listen(7777, () => {
-  console.log("Server is running on port 7777");
-});
+    app.listen(7777, () => {
+      console.log("Server is running on port 7777");
+    });
+  })
+  .catch((error) => {
+    console.error("Error connecting to the database:", error);
+  });
