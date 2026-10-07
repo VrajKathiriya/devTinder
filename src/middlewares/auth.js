@@ -13,7 +13,6 @@ const userAuth = async (req, res, next) => {
     const { id } = decodedMsg;
 
     const user = await User.findById(id);
-    console.log(user, id, decodedMsg)
 
     if (!user) {
       throw new Error("User not found")
